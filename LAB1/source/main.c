@@ -1,5 +1,5 @@
-#include  "../header/api.h"    		// private library - API layer
-#include  "../header/app.h"    		// private library - APP layer
+#include  "../header/api.h"            // private library - API layer
+#include  "../header/app.h"            // private library - APP layer
 
 enum FSMstate state;
 enum SYSmode lpm_mode;
@@ -23,41 +23,41 @@ void main(void){
   
   
   while(1){
-	switch(state){
-	  case state0:
-		ClearLEDs();
+    switch(state){
+      case state0:
+        ClearLEDs();
                 enterLPM(lpm_mode);
-		break;
-		 
-	  case state1:
+        break;
+         
+      case state1:
                 DisablePBinterrupts(0xE0);// Enable only PB1 interrupts while it runs
                 while (state1Timer < 20){ // Limits state1 time < 10s
                   if (toggleCount == 0){ // checks which direction to count
                    incLEDs(1);
                   }
-		  else {
+          else {
                     incLEDs(-1);
                   }
-		  delay(LEDs_SHOW_RATE);	// delay of 500 [ms]
+          delay(LEDs_SHOW_RATE);    // delay of 500 [ms]
                   ledValS1 = LEDsArrPort; // saves count value for the next pb0 interrupt
                   state1Timer = state1Timer + 1;
                   }
                 state = state0; //next state is state0
                 EnablePBinterrupts(0xF0); // renable interrupts of al PBs
-    		break;
-		 
-	  case state2:
-		disable_interrupts();
+            break;
+         
+      case state2:
+        disable_interrupts();
                 state2Timer = 0;
                 while (state2Timer < 14){ // loop that limits state 2 by 7 seconds
-		  ShiftLeftLED();         // SHL
+          ShiftLeftLED();         // SHL
                   delay(LEDs_SHOW_RATE);  // delay of 500 [ms]
                   ledValS2 = LEDsArrPort ;// Save the leds array value
                   state2Timer = state2Timer + 1;
                 }
                 state = state0; //next state is state0
                 enable_interrupts();
-		break;
+        break;
                 
         case state3:
           ClearLEDs();
@@ -69,6 +69,6 @@ void main(void){
         case state4:
           state = state0;
           break;
-	}
+    }
       }
 }
