@@ -25,6 +25,8 @@ void GPIOconfig(void){
   PBsArrIntEn |= 0xF0;
   PBsArrIntPend &= ~0xF0;            // clear pending interrupts 
   
+  Port2Dir |= 0x01;
+  
   _BIS_SR(GIE);                     // enable interrupts globally
 }                             
 //------------------------------------------------------------------------------------- 

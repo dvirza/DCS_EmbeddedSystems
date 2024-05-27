@@ -29,7 +29,8 @@ extern void disable_interrupts();
 extern void ShiftLeftLED();
 extern void P20_PWM(int DutyCycle);
 extern void EnablePBinterrupts(unsigned char pbs);
-
+extern void DisablePBinterrupts(unsigned char pbs);
+extern void ClearLEDs(void);
 
 extern __interrupt void PBs_handler(void);
 

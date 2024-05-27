@@ -25,15 +25,14 @@ void clrLEDs(void){
 //		Transmit PWM signal with a input dc from port 2 [0]
 //--------------------------------------------------------------------
 void P20_PWM(int DutyCycle){
-  
-  Port2Dir |= 0x01;
+
   //given the clock freq is 1MHZ
   // T = 1/1,048,576s
   Port2Out |= 0x01; // P2[0} = '1'
-  __delay_cycles(1875);
+  delay(0x0011);
   //delay 2500 cycles total
   Port2Out &= 0xFE; // // P2[0} = '0'
-  __delay_cycles(625);
+  delay(0x0003);
   
 }
 //--------------------------------------------------------------------
@@ -103,7 +102,14 @@ void enable_interrupts(){
 //            Selects which interrupts are enabled interrupts
 //--------------------------------------------------------------------
 void EnablePBinterrupts(unsigned char pbs){ // 
-  PBsArrIntEn = pbs;
+  PBsArrIntEn |= pbs;
+}
+
+void DisablePBinterrupts(unsigned char pbsToSetOff){
+  PBsArrIntEn &= ~pbsToSetOff;
+}
+void ClearLEDs(void){
+  LEDsArrPort = 0x00;
 }
 //---------------------------------------------------------------------
 //            Disable interrupts

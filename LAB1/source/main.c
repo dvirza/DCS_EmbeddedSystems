@@ -25,12 +25,12 @@ void main(void){
   while(1){
 	switch(state){
 	  case state0:
-		printSWs2LEDs();
+		ClearLEDs();
                 enterLPM(lpm_mode);
 		break;
 		 
 	  case state1:
-                EnablePBinterrupts(0x10);// Enable only PB1 interrupts while it runs
+                DisablePBinterrupts(0xE0);// Enable only PB1 interrupts while it runs
                 while (state1Timer < 20){ // Limits state1 time < 10s
                   if (toggleCount == 0){ // checks which direction to count
                    incLEDs(1);
@@ -42,8 +42,8 @@ void main(void){
                   ledValS1 = LEDsArrPort; // saves count value for the next pb0 interrupt
                   state1Timer = state1Timer + 1;
                   }
-                  EnablePBinterrupts(0xF0); // renable interrupts of al PBs
-                  state = state0; //next state is state0
+                state = state0; //next state is state0
+                EnablePBinterrupts(0xF0); // renable interrupts of al PBs
     		break;
 		 
 	  case state2:
@@ -60,11 +60,10 @@ void main(void){
 		break;
                 
         case state3:
+          ClearLEDs();
               //creates pwm code 75% duty cycle
-          P20_PWM(75);
-          
-          
-          state = state0;
+          while(state == state3)
+            P20_PWM(75);
           break  ;
           
         case state4:
