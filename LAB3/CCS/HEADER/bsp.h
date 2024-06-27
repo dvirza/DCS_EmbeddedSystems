@@ -10,19 +10,23 @@
 #define   debounceVal      250
 #define   LEDs_SHOW_RATE   0xCCCC  // 500 ms
 
-// LEDs abstraction
-//#define LEDsArrPort        P1OUT
-//#define LEDsArrPortDir     P1DIR
-//#define LEDsArrPortSel     P1SEL
 
-// Port2 abstraction
-#define Port2Out           P2OUT
-#define Port2Dir           P2DIR
-#define Port2Select        P2SEL
+// Keypad abstraction
+#define KPOut              P10OUT
+#define KPDir              P10DIR
+#define KPIn               P10IN
 
-#define Port10Out          P10OUT
-#define Port10Dir          P10DIR
-#define Port10In           P10IN
+#define KPpress            0x02
+
+#define KPArrPort          P2IN
+#define KPArrIntPend       P2IFG
+#define KPArrIntEn         P2IE
+#define KPArrIntEdgeSel    P2IES
+#define KPArrPortSel       P2SEL
+#define KPArrPortDir       P2DIR
+
+#define KPIRQ              0x02
+
 
 // Switches abstraction
 #define SWsArrPort         P2IN
@@ -30,7 +34,7 @@
 #define SWsArrPortSel      P2SEL
 #define SWmask             0xFE
 
-// PushButtons abstraction
+//    PushButtons abstraction
 #define PBsArrPort	       P1IN
 #define PBsArrIntPend	   P1IFG 
 #define PBsArrIntEn	       P1IE
@@ -43,10 +47,13 @@
 #define PB3                0x02
 
 
+//    LEDs abstraction
+#define LEDsArrPort        P9OUT
+#define LEDsArrPortDir     P9DIR
+#define LEDsArrPortSel     P9SEL
 
 
 //    LCD abstraction
-
 #define LCD_DATA_WRITE    P1OUT
 #define LCD_DATA_DIR      P1DIR
 #define LCD_DATA_SEL      P1SEL
@@ -60,7 +67,7 @@
 #define BUZER_SEL         P2SEL
 
 
-//genrator abstraction
+//    genrator abstraction
 #define GENsArrPortIn	    P2IN 
 #define GENsArrPortDir      P2DIR 
 #define GENsArrPortSel      P2SEL
@@ -70,6 +77,7 @@ extern void GPIOconfig(void);
 extern void TIMERconfig(void);
 extern void ADCconfig(void);
 extern void TIMERcfgST4(void);
+extern void DMAconfig(void);
 
 
 #endif

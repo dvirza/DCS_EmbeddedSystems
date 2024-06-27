@@ -7,8 +7,11 @@
 
 extern enum FSMstate state;   // global variable
 extern enum SYSmode lpm_mode; // global variable
-extern int state2Timer; // global variable
-
+extern void timerB1Sec();
+extern char KB;
+extern int timerEnded;
+extern int TimerBDone;
+extern int LEDsVal;
 
 extern void sysConfig(void);
 extern void print2LEDs(unsigned char);
@@ -20,6 +23,18 @@ extern void delay(unsigned int);
 extern void enterLPM(unsigned char);
 extern void enable_interrupts();
 extern void disable_interrupts();
+extern void mask_PBs();
+extern void unmask_PBs(void);
+extern void DMAPrepare (char*, char* ,char);
+extern void DMAPrepareST3 (int* Src);
+extern void DMA0vamos(void);
+extern void DMA1vamos(void);
+extern void timerBclear(void);
+
+
+
+
+
 
 extern void EnablePBinterrupts(unsigned char pbs);
 extern void DisablePBinterrupts(unsigned char pbs);
@@ -83,29 +98,16 @@ extern void lcd_init();
 extern void lcd_strobe();
 extern void DelayMs(unsigned int);
 extern void DelayUs(unsigned int);
-extern unsigned int TA1start;
-extern unsigned int TA1end;
-extern unsigned int CycleDiff;
-extern int cyc;
 
-extern void lcd_cmd(unsigned char);
-extern void lcd_data(unsigned char);
-extern void lcd_puts(const char * s);
-extern void lcd_init();
-extern void lcd_strobe();
+extern void disable_keypad();
+extern void enable_keypad();
+extern void disable_TimerB();
+extern void enable_TimerB();
+extern void timerBHsec();
+extern void timerB1Sec();
+extern void disable_TimerBCCIE();
+extern void enable_TimerBCCIE();
 
-
-extern void enable_TimerA0();
-extern void disable_TimerA0();
-extern void enable_TimerA1();
-extern void enable_TimerA1S3();
-extern void disable_TimerA1();
-extern void enable_TA1CCTL2();
-extern void enable_ADC10();
-extern void disable_ADC10();
-extern void start_timerA0On();
-unsigned int GetMeas(void);
-extern void Ins2Regis4ADC(unsigned int x);
 
 
 

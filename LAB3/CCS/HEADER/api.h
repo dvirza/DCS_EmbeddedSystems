@@ -7,12 +7,20 @@
 
 extern void printSWs2LEDs(void);
 extern void printArr2SWs(char Arr[], int size, unsigned int rate);
-
-extern void idiomrecorder(void);
-
-extern char ST1str[6];
+extern const char * LCD_state1_txt;
+extern void idiomrecord(void);
+extern char idiom_recorder[32];
+extern void Merge(void);
 extern int unsigned SampledFreq;
 extern unsigned char readSWs(void);
-extern const char * LCD_state1_txt;
+extern int TimerBDone;
+extern int State3Arrray[9];
+extern void DMAPrepareST3 (int* Src);
+
+void ChooseSentence(void);
+void DMAstate2(char*, char*, char*);
+void showString(char*);
+void LedSwitch(void);
+void DMA2Leds(int * Src);
 
 #endif
