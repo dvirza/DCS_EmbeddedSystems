@@ -68,15 +68,17 @@ void TIMERconfig(void){
 
 
 void DMAconfig(void){
-
-       //DMACTL0 = DMA0TSEL_0 + DMA1TSEL_8; // first dma turnes on manually and secound turnes on by timer b compare
-       DMACTL0 = DMA0TSEL_0; // software triggered
-       DMA0CTL = DMADT_1 + DMADSTBYTE + DMASRCBYTE + DMAIE + DMADSTINCR_3 + DMASRCINCR_3; // block mode , enable, interrupt enable, dec order
+       DMACTL0 = DMA1TSEL_8; // Hardware triggered dma channel 1 by timer B
+       DMACTL0 |= DMA0TSEL_0; // Software triggered DMA #channel 0 // adding DMA ch0 conf
+       DMA0CTL = DMADT_1 + DMADSTBYTE + DMASRCBYTE + DMAIE + DMADSTINCR_3 + DMASRCINCR_3; // block mode , destination byte, enable interrupt enable, src DST increment,DST increment
        DMA1SZ = 0x001;
        DMA1CTL = DMADT_1 + DMASBDB + DMAIE; // block mode , byte-to-byte , enable
-       //DMA1SA = (void (*)())&ledsValue;
-       //DMA1DA = (void (*)())&LEDsArrPort; //LEDsVal
        DMA1DA = &LEDsArrPort;
+       //DMACTL2 |= DMA2TSET_0
+       DMA2CTL = DMADT_1 + DMADSTBYTE + DMASRCBYTE + DMAIE + DMADSTINCR_3 + DMASRCINCR_2;
+       DMA2SZ = 0x09F;
+       DMA2DA = &strMirror;
+       DMA2SA = &RTstr[159];
 }
 
 

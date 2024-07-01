@@ -14,8 +14,6 @@ void main(void){
   lcd_init(); //initiate and clear LCD
   lcd_clear();
   
-  
-  
   while(1){
 	switch(state){
 	      case state0:
@@ -24,8 +22,7 @@ void main(void){
 
           case state1: // Measure Frequency and Print On LCD (TimerA1)
               idiomrecord();
-
-              state = state0;
+//              state = state0;
               break;
 
           case state2: // Count Seconds and Print On LCD (TimerA0)
@@ -35,20 +32,13 @@ void main(void){
 
           case state3: // Generates a signal with buzzer calibration
               LedSwitch();
-              state = state0;
+              break;
+
+          case state4:
+              RealTimeTask();
               break;
           }
           
-
-          
-
-/*        case state4:
-
-          while (state == state4){
-
-          }
-
-          break;*/
 	}
   }
 

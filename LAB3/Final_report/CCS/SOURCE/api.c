@@ -32,6 +32,11 @@ int sizes_matrix[10][9] = {
            {6,4,3,6,0,0,0,0,0},
            {4,5,4,5,6,0,0,0,0},
            {7,6,4,7,4,0,0,0,0}};
+
+char RTstr[160] = "Google Colaboratory is a free Jupyter notebook environment that runs on Google’s cloud servers, letting the user leverage backend hardware like GPUs and TPUs";
+char strMirror[160];
+
+
 int Input1;
 int Input2;
 
@@ -112,9 +117,9 @@ void idiomrecord(void){
         }
         disable_TimerBCCIE();
         disable_keypad();
-
-        state = state0;
-        lcd_clear();
+        if (numOfletters == 32)
+            state = state0;
+//        lcd_clear();
 }
 
 //--------------------------------------------------------------------
@@ -136,7 +141,7 @@ void Merge(){
     //show_merge string
     showString(strMerge);
     unmask_PBs();
-    lcd_clear();
+    //lcd_clear();
     state = state0;
 }
 
@@ -188,7 +193,7 @@ void DMAstate2(char* Src1, char* Src2, char* Dest){
 }
 
 void showString(char* str){
-    int j;
+    int j = 0;
     // ensures full scroll of the strMerge
     lcd_clear();
 
@@ -218,40 +223,78 @@ void showString(char* str){
 }
 
 
-void LedSwitch(){
+void LedSwitch(){ //// FIX HARDWARE TRIGGER!
     int i = 0;
-    enable_TimerBCCIE();
+    disable_TimerBCCIE();
+    //enable_TimerBCCIE();
     while (state == state3){
         TimerBDone = 0;
+        DMAPrepareST3(&(State3Arrray[i % 9]));
         timerBHsec();
         enterLPM(lpm_mode);
-        if (TimerBDone) {
-        DMAPrepareST3(&(State3Arrray[i % 9]));
-        DMA1vamos();
         timerBclear();
+        //if (TimerBDone) {
+            //DMA1vamos(); //Launch DMA Shoot
         i ++;
-        }
-        }
-    LEDsArrPort = 0;
-    disable_TimerBCCIE();
+    }
+    LEDsArrPort = 0x00;
+    disable_TimerB();
+
 
 }
 
+void RealTimeTask(){
+    mask_PB3();
+    enable_keypad();
+    DMA2vamos();
+    //showString4(strMirror);
+    printFullScreen(strMirror);
+    disable_keypad();
+    unmask_PB3();
+    state = state0;
+}
 
 
+void printFullScreen(char* str){
+    int j = 0;
+        // ensures full scroll of the strMerge
+    lcd_clear();
 
-//--------------------------------------------------------------------
-//            Updates the freq meas val on lcd screen
-//--------------------------------------------------------------------
+    for(j = 0; j < 32; j ++ ){
+        lcd_putchar(str[j]);
+        if (j == 15)
+            lcd_new_line;
+    }
+}
 
+void showString4(char* str){
+    int j = 0;
+    // ensures full scroll of the strMerge
+    lcd_clear();
 
-//*****************************************************************************
-// STATE 2 FUNCTIONS
-//*****************************************************************************
+    for(j = 0; j < 32 ; j ++ ){
+        lcd_putchar(str[j]);
+        if (j == 15)
+            lcd_new_line;
+    }
 
+    cursor_off;
+    j = j-16;
+    while ( j < 160 ){
+        enterLPM(lpm_mode);
+        lcd_home();
+        cursor_on;
+        int i;
+        for( i = j ; i < j+32 ; i ++ ){
+                lcd_putchar(str[i]);
+                if (i == j+15){
+                    lcd_home();
+                    lcd_new_line;
+                }
+        }
+        j = j + 16;
+    }
 
+}
 
-//*****************************************************************************
-// STATE 3 FUNCTIONS
-//*****************************************************************************
 

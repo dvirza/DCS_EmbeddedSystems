@@ -26,12 +26,20 @@ unsigned char readSWs(void){
 
 
 void mask_PBs(){
-    PBsArrIntEn &= ~(PB0 + PB1 + PB2);
+    PBsArrIntEn &= ~(PB0 + PB1 + PB2 + PB3);
+}
+void mask_PB3(){
+    PBsArrIntEn &= ~(PB3);
 }
 
 void unmask_PBs(){
-    PBsArrIntEn |= (PB0 + PB1 + PB2);
+    PBsArrIntEn |= (PB0 + PB1 + PB2 + PB3);
 }
+void unmask_PB3(){
+    PBsArrIntEn |= (PB3);
+}
+
+
 //---------------------------------------------------------------------
 //            Enter from LPM0 mode
 //---------------------------------------------------------------------
@@ -100,6 +108,11 @@ void disable_interrupts(){
 	        state = state3;
 	        PBsArrIntPend &= ~PB2;
         }
+	else if(PBsArrIntPend & PB3){
+	        state = state4;
+	        PBsArrIntPend &= ~PB3;
+
+	}
 
 //---------------------------------------------------------------------
 //            Exit from a given LPM 
@@ -138,6 +151,7 @@ void DMAPrepare (char* Src, char* Dst,char Size){
 
 void DMAPrepareST3 (int* Src){
   DMA1SA = Src;
+  DMA1CTL |= DMAEN;
 }
 
 void DMA0vamos(){
@@ -146,6 +160,9 @@ void DMA0vamos(){
 
 void DMA1vamos(){
     DMA1CTL |= DMAREQ + DMAEN;
+}
+void DMA2vamos(){
+    DMA2CTL |= DMAREQ + DMAEN;
 }
 
 
@@ -186,7 +203,7 @@ void DMA1vamos(){
 	  }
 
 
-	  if ((KPIRQ & KPArrIntPend) && (state == state2)){ //state 1 keypad mapping
+	  if ((KPIRQ & KPArrIntPend) && ((state == state2) || (state == state4))){ //state 1 keypad mapping
 	          KB = 'r';
 	          KPOut = 0x0E;
 	          if (( KPIn & 0x40 ) == 0 ) KB = '0';
@@ -254,9 +271,6 @@ void __attribute__ ((interrupt(TIMER0_B0_VECTOR))) Timer_B (void)
 {
     if (state == state1)
         timerEnded=1;
-    if (state == state3)
-        TimerBDone=1;
-    LPM0_EXIT;
 }
 
 //*********************************************************************
@@ -267,6 +281,7 @@ __interrupt void DMA_ISR(void)
 {
  DMA0CTL &= ~DMAIFG;
  DMA1CTL &= ~DMAIFG;
+ DMA2CTL &= ~DMAIFG;
  __bic_SR_register_on_exit(LPM0_bits);       // Exit LPMx, interrupts enabled
 }
 

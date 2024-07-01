@@ -44,7 +44,7 @@
 #define PB0                0x01
 #define PB1                0x02
 #define PB2                0x04
-#define PB3                0x02
+#define PB3                0x08
 
 
 //    LEDs abstraction
@@ -78,7 +78,8 @@ extern void TIMERconfig(void);
 extern void ADCconfig(void);
 extern void TIMERcfgST4(void);
 extern void DMAconfig(void);
-
+extern char RTstr[160];
+extern char strMirror[160];
 
 #endif
 

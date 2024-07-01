@@ -24,13 +24,16 @@ extern void enterLPM(unsigned char);
 extern void enable_interrupts();
 extern void disable_interrupts();
 extern void mask_PBs();
+extern void mask_PB3();
+extern void unmask_PB3();
+
 extern void unmask_PBs(void);
 extern void DMAPrepare (char*, char* ,char);
 extern void DMAPrepareST3 (int* Src);
 extern void DMA0vamos(void);
 extern void DMA1vamos(void);
 extern void timerBclear(void);
-
+extern void DMA2vamos();
 
 
 
